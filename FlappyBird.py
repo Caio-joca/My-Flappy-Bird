@@ -17,7 +17,7 @@ last_pipe_time = pygame.time.get_ticks()
 LARGURA = 500
 ALTURA = 700
 
-#flappy do gpteco
+#flappy 
 def desenhar_ovni(tela, x, y):
     metal_claro = (180, 190, 205)
     metal_medio = (120, 130, 150)
@@ -52,7 +52,7 @@ def desenhar_ovni(tela, x, y):
 
     pygame.draw.circle(tela, (255, 255, 255), (x + 34, y + 10), 3)
 
-#CENÁRIO DO GPTECO
+#CENÁRIO
 def desenhar_ceu_apocaliptico(tela, largura, altura):
     cor_topo = (45, 18, 35)      # roxo escuro
     cor_meio = (130, 45, 35)     # vermelho queimado
@@ -386,7 +386,7 @@ while rodando:
     '''pygame.draw.rect(tela, VERDE, (pipe_position3, 0,        100, alt3canodecima)) #cano de cima(a altura aleatória deve ser de 100 a 400)
     pygame.draw.rect(tela, VERDE, (pipe_position3, y3canodebaixo, 100,     900)) #cano de baixo(a posição do y deve ser de 250 a 600 )
     '''
-    #cano com gpt
+    #cano 
     desenhar_cano_cima_apocaliptico(tela, pipe_position, 100, altcanodecima)
     desenhar_cano_baixo_apocaliptico(tela, pipe_position, ycanodebaixo, 100, ALTURA)
 
