@@ -1,0 +1,6 @@
+1. the Jump (+/-)
+2. the pipes always coming (OK)
+I can make a randomizer of numbers, that always come in between a limit of numbers. (OK)
+I will need a function that generates pipes, periodicaly. (OK, I had another solution)
+3. restar of the game when touching a pipe (OK)
+4. couting of pipes (OK)
