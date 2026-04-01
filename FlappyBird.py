@@ -25,7 +25,13 @@ def addingpoints():
         point_sound()
     return point
     
-
+#Função de reset de canos
+def pipereset(posicaodocano,poscanoanterior,altcanodecimafunc,ycanodebaixofunc):
+    if posicaodocano<=-100:
+            posicaodocano=poscanoanterior+300
+            altcanodecimafunc = random.randint(100, 400)
+            ycanodebaixofunc  = altcanodecimafunc+150 
+    return (posicaodocano, altcanodecimafunc, ycanodebaixofunc)
 #Função para se ter música dentro do jogo
 '''
 Usamos pygame.mixer.sound() para sons rápidos como açoes de pulos
@@ -346,11 +352,7 @@ while rodando:
             altcanodecima = random.randint(100, 400)
             ycanodebaixo  = altcanodecima+150 
             last_pipe_time = pygame.time.get_ticks()'''
-    if pulo ==True:
-        if tempo-tempodeespaco < 175 :
-            y+=15
-        else:
-            pulo=False
+
 
     if notrunning== True and run== False:
         pygame.draw.rect(tela, VERDE, (150, 200, 200, 60))
@@ -372,17 +374,6 @@ while rodando:
         y = 5
         tempodeespaco = 0
 
-
-
-#LÓGICA PARA COLISÃO  
-#if (pipe_position <= xflappy <= pipe_position + 100 or pipe_position2 <= xflappy <= pipe_position2 + 100 or pipe_position3 <= xflappy <= pipe_position3 + 100) and (yflappy <= altcanodecima or yflappy >= ycanodebaixo):
-    if ((pipe_position <= xflappy <= pipe_position + 100 and (yflappy <= altcanodecima or yflappy+40 >= ycanodebaixo)) or (pipe_position2 <= xflappy <= pipe_position2 + 100 and (yflappy <= alt2canodecima or yflappy+40 >= y2canodebaixo)) or (pipe_position3 <= xflappy <= pipe_position3 + 100 and (yflappy <= alt3canodecima or yflappy+40 >= y3canodebaixo)) or (-100 >= yflappy) or yflappy>= 700) :
-        death_sound_func()
-        notrunning = True
-        run = False
-        y = 5  # Resetando a posição do Flappy Bird
-        recorde = max(recorde, points)  # Atualizando o recorde se a pontuação atual for maior
-        points = 0  # Resetando a pontuação
     
     yflappy=100-y
     desenhar_ovni(tela, xflappy, yflappy)
@@ -426,6 +417,11 @@ while rodando:
     desenhar_cano_baixo_apocaliptico(tela, pipe_position3, y3canodebaixo, 100, ALTURA)
 
     if run== True:
+        if pulo ==True:
+            if tempo-tempodeespaco < 175 :
+                y+=15
+            else:
+                pulo=False
         imagemponto = fonte.render(f"{points}", False, BRANCO)
         tela.blit(imagemponto, (220, 105))
         gravity=gravity*queda #queda=1.05 gravity inicialmente= 5
@@ -442,26 +438,19 @@ while rodando:
         pipe_position3-=x
         points+=addingpoints() 
         #Reinício do cano
-        if pipe_position<=-100:
-            pipe_position=pipe_position3+300
-            altcanodecima = random.randint(100, 400)
-            ycanodebaixo  = altcanodecima+150 
-        if pipe_position2<=-100:
-            pipe_position2=pipe_position+300
-            alt2canodecima = random.randint(100, 400)
-            y2canodebaixo  = alt2canodecima+150
-        if pipe_position3<=-100:
-            pipe_position3=pipe_position2+300
-            alt3canodecima = random.randint(100, 400)
-            y3canodebaixo  = alt3canodecima+150
-        '''print(f'pipe_position: {pipe_position}+{pipe_position2}+{pipe_position3}')'''
-        '''print(f'{points}')''' 
-    #iniciando a lógica para o objeto cair
-    '''y-=5'''
-    teclas= pygame.key.get_pressed()
-    '''if teclas[pygame.K_SPACE]:
-        y+=15'''
+        pipe_position, altcanodecima, ycanodebaixo=pipereset(pipe_position,pipe_position3,altcanodecima,ycanodebaixo)
+        pipe_position2, alt2canodecima, y2canodebaixo=pipereset(pipe_position2,pipe_position,alt2canodecima,y2canodebaixo)
+        pipe_position3, alt3canodecima, y3canodebaixo=pipereset(pipe_position3,pipe_position2,alt3canodecima,y3canodebaixo)
 
+        #LÓGICA PARA COLISÃO  
+        #if (pipe_position <= xflappy <= pipe_position + 100 or pipe_position2 <= xflappy <= pipe_position2 + 100 or pipe_position3 <= xflappy <= pipe_position3 + 100) and (yflappy <= altcanodecima or yflappy >= ycanodebaixo):
+        if ((pipe_position <= xflappy <= pipe_position + 100 and (yflappy <= altcanodecima or yflappy+40 >= ycanodebaixo)) or (pipe_position2 <= xflappy <= pipe_position2 + 100 and (yflappy <= alt2canodecima or yflappy+40 >= y2canodebaixo)) or (pipe_position3 <= xflappy <= pipe_position3 + 100 and (yflappy <= alt3canodecima or yflappy+40 >= y3canodebaixo)) or (-100 >= yflappy) or yflappy>= 700) :
+            death_sound_func()
+            notrunning = True
+            run = False
+            y = 5  # Resetando a posição do Flappy Bird
+            recorde = max(recorde, points)  # Atualizando o recorde se a pontuação atual for maior
+            points = 0  # Resetando a pontuação
 
     tempo = pygame.time.get_ticks()
     print(f'Tempo: {tempo} ms')
