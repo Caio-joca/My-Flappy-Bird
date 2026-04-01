@@ -1,6 +1,13 @@
-1. the Jump (+/-)
+1. the Jump (+/-) Its fine, because the model is a spaceshipp, I will also create another minigame
 2. the pipes always coming (OK)
-I can make a randomizer of numbers, that always come in between a limit of numbers. (OK)
-I will need a function that generates pipes, periodicaly. (OK, I had another solution)
+    I can make a randomizer of numbers, that always come in between a limit of numbers. (OK)
+    I will need a function that generates pipes, periodicaly. (OK, I had another solution)
 3. restar of the game when touching a pipe (OK)
 4. couting of pipes (OK)
+
+1.The code need organization
+    inside the while I need 3 stages of the game
+        I.Menu
+        II.running the game, if the bird dies back to the Menu
+        III.New game mode
+    So for this I need functions that guarantee certain actions, like the fall, jump, pipes movement

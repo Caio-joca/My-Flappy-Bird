@@ -8,11 +8,46 @@ import random
 # Função para carregar módulos da biblioteca pygame, se não precisarioamos carregar várias funções individualmente
 pygame.init()
 
-#Funçao de relógio para conferir
 
-font = pygame.font.SysFont(None, 24)
-last_pipe_time = pygame.time.get_ticks()
+#Função de pontuação
 
+def addingpoints():
+    #LÓGICA PARA OS PONTOS
+    point=0
+    if pipe_position<=90 and pipe_position>=89:
+        point+=1
+        point_sound()
+    if pipe_position2<=90 and pipe_position2>=89:
+        point+=1  
+        point_sound()
+    if pipe_position3<=90 and pipe_position3>=89:
+        point+=1
+        point_sound()
+    return point
+    
+
+#Função para se ter música dentro do jogo
+'''
+Usamos pygame.mixer.sound() para sons rápidos como açoes de pulos
+Para ações como trilha sonoras usamos pygame.mixer.music
+'''
+pygame.mixer.init()
+#carregando os sons da pasta
+som_pulo = pygame.mixer.Sound("Áudios/Voicy_Jump-sound.wav")
+death_sound= pygame.mixer.Sound("Áudios/DeathSound_cortado.WAV")
+som_de_ponto= pygame.mixer.Sound("Áudios/Voicy_Coin.wav")
+pygame.mixer.music.load("Áudios/TempleOS Hymn - Risen - ZAMORA (youtube).mp3")
+pygame.mixer.music.set_volume(0.7)
+def som_de_pulo():
+    som_pulo.play()
+
+def death_sound_func(): #dimiuir o delay do som
+    death_sound.play()
+
+def point_sound():
+    som_de_ponto.play()
+def trilha():
+    pygame.mixer.music.play(-1)
 # Configurações da janela
 LARGURA = 500
 ALTURA = 700
@@ -285,9 +320,10 @@ recorde=0
 points=0
 queda=1.03
 pulo=False
+# Toca música, fora do while pois se não fica resetando sempre
+trilha()
 while rodando:
     # Preenche o fundo
-
     desenhar_ceu_apocaliptico(tela, LARGURA, ALTURA)
     desenhar_fumaca_apocaliptica(tela)
     desenhar_luzes_ets(tela)
@@ -299,6 +335,7 @@ while rodando:
             if evento.key == pygame.K_SPACE :
                 run=True
                 pulo=True
+                som_de_pulo()
                 tempodeespaco = pygame.time.get_ticks()
                 espaco = pygame.K_SPACE
             if evento.key == pygame.K_ESCAPE:
@@ -335,26 +372,18 @@ while rodando:
         y = 5
         tempodeespaco = 0
 
-#LÓGICA PARA OS PONTOS
-    if pipe_position<=90 and pipe_position>=89:
-        points+=1
-    if pipe_position2<=90 and pipe_position2>=89:
-        points+=1
-    if pipe_position3<=90 and pipe_position3>=89:
-        points+=1
+
 
 #LÓGICA PARA COLISÃO  
 #if (pipe_position <= xflappy <= pipe_position + 100 or pipe_position2 <= xflappy <= pipe_position2 + 100 or pipe_position3 <= xflappy <= pipe_position3 + 100) and (yflappy <= altcanodecima or yflappy >= ycanodebaixo):
     if ((pipe_position <= xflappy <= pipe_position + 100 and (yflappy <= altcanodecima or yflappy+40 >= ycanodebaixo)) or (pipe_position2 <= xflappy <= pipe_position2 + 100 and (yflappy <= alt2canodecima or yflappy+40 >= y2canodebaixo)) or (pipe_position3 <= xflappy <= pipe_position3 + 100 and (yflappy <= alt3canodecima or yflappy+40 >= y3canodebaixo)) or (-100 >= yflappy) or yflappy>= 700) :
+        death_sound_func()
         notrunning = True
         run = False
         y = 5  # Resetando a posição do Flappy Bird
         recorde = max(recorde, points)  # Atualizando o recorde se a pontuação atual for maior
         points = 0  # Resetando a pontuação
     
-    elapsed_seconds = (pygame.time.get_ticks() - last_pipe_time) / 1000.0
-    time_text = font.render(f"Time since last pipe: {elapsed_seconds:.1f}s", True, BRANCO)
-    tela.blit(time_text, (10, 10))
     yflappy=100-y
     desenhar_ovni(tela, xflappy, yflappy)
                                 #  X         Y     LARGURA ALTURA
@@ -411,7 +440,8 @@ while rodando:
         pipe_position-=x
         pipe_position2-=x
         pipe_position3-=x
-            #Reinício do cano
+        points+=addingpoints() 
+        #Reinício do cano
         if pipe_position<=-100:
             pipe_position=pipe_position3+300
             altcanodecima = random.randint(100, 400)
