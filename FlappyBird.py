@@ -265,7 +265,7 @@ def desenhar_cano_baixo_apocaliptico(tela, x, y, largura, altura_tela):
 
 #Configurações da gravidade
 y=5
-run = False
+jogodopulo = False
 gravity = 5
 
 #Movimento do cano
@@ -322,10 +322,19 @@ diferenca=0
 #tentativa de botão de saída
 notrunning= True
 espaco=None
-recorde=0
-points=0
+recordegravity=0
+recordeflappy=0
+recordekinnect=0
+Flappypoints=0
 queda=1.03
 pulo=False
+Antigravidade=False
+flag=False
+flag2=False
+Troca=True
+tabela=False
+gravitypoints=0
+kinectpoints=0
 # Toca música, fora do while pois se não fica resetando sempre
 trilha()
 while rodando:
@@ -339,95 +348,44 @@ while rodando:
     for evento in pygame.event.get():
         if evento.type == pygame.KEYDOWN: #aqui estu fazendo com que o programa reconheça o apertar da tecla x para assim fechar a jannela
             if evento.key == pygame.K_SPACE :
-                run=True
-                pulo=True
+                jogodopulo=True
+                pulo=not pulo
                 som_de_pulo()
                 tempodeespaco = pygame.time.get_ticks()
                 espaco = pygame.K_SPACE
+            #Sair do jogo
             if evento.key == pygame.K_ESCAPE:
                 rodando= False
+            #1°Modo de jogo
+            if evento.key == pygame.K_1 and jogodopulo ==False:
+                Antigravidade= False
+            #2° Modo de Jogo
+            if evento.key == pygame.K_2 and jogodopulo ==False:
+                Antigravidade= True
+            #Ver tabela de pontos
+            if evento.key == pygame.K_p and jogodopulo ==False:
+                tabela= not tabela
         elif evento.type == pygame.QUIT:
             rodando = False
-        '''if evento.type == pipetime:
-            altcanodecima = random.randint(100, 400)
-            ycanodebaixo  = altcanodecima+150 
-            last_pipe_time = pygame.time.get_ticks()'''
+    if pulo ==True and Antigravidade==False:
+        if tempo-tempodeespaco < 175 :
+            y+=15
+        else:
+            pulo=False
 
 
-    if notrunning== True and run== False:
-        pygame.draw.rect(tela, VERDE, (150, 200, 200, 60))
-        pygame.draw.rect(tela, VERDE, (150, 270, 200, 60))
-        pygame.draw.rect(tela, VERDE, (150, 340, 200, 60))
-        fonte = pygame.font.SysFont(None, 40)
-        textoimagem = fonte.render("Start", False, BRANCO)
-        imagemsaida = fonte.render("Esc", False, BRANCO)
-        imagemrecorde = fonte.render(f"Recorde {recorde}", False, BRANCO)
-        tela.blit(textoimagem, (220, 215))
-        tela.blit(imagemsaida, (220, 355))
-        tela.blit(imagemrecorde, (180, 285))# X e Y
-        pipe_position = 400
-        pipe_position2 = 700
-        pipe_position3 = 1100
-        pulo = False
-        espaco = None
-        gravity = 5
-        y = 5
-        tempodeespaco = 0
-
-    
-    yflappy=100-y
-    desenhar_ovni(tela, xflappy, yflappy)
-                                #  X         Y     LARGURA ALTURA
-    '''pygame.draw.rect(tela,BRANCO,(xflappy,yflappy  ,50   ,50))
-    #Boca do flappi bird em amarelo
-    pygame.draw.rect(tela,AMARELO,(115,130-y,25,20))
-    #Contorno em preto da boca do flappy Bird
-    pygame.draw.rect(tela,PRETO,(115,130-y,25,1))
-    pygame.draw.rect(tela,PRETO,(115,149-y,25,1))
-    pygame.draw.rect(tela,PRETO,(115,130-y,1,20))
-    pygame.draw.rect(tela,PRETO,(140,130-y,1,20))
-    pygame.draw.rect(tela,PRETO,(115,139-y,25,1))'''
-
-    '''randomheightA = random.randint(400, 800)
-    randomheightB = random.randint(0,400)'''
-    #Iniciando o design dos canos
-    '''PRIMEIRO CANO'''
-                  #        x     y         larg        altura
-    '''pygame.draw.rect(tela, VERDE, (pipe_position, 0,        100, altcanodecima)) #cano de cima(a altura aleatória deve ser de 100 a 400)
-    pygame.draw.rect(tela, VERDE, (pipe_position, ycanodebaixo, 100,     900)) #cano de baixo(a posição do y deve ser de 250 a 600 )
-    '''
-    '''SEGUNDO CANO'''
-     
-    '''pygame.draw.rect(tela, VERDE, (pipe_position2, 0,        100, alt2canodecima)) #cano de cima(a altura aleatória deve ser de 100 a 400)
-    pygame.draw.rect(tela, VERDE, (pipe_position2, y2canodebaixo, 100,     900)) #cano de baixo(a posição do y deve ser de 250 a 600 )
-    '''
-    '''TERCEIRO CANO'''
-    
-    '''pygame.draw.rect(tela, VERDE, (pipe_position3, 0,        100, alt3canodecima)) #cano de cima(a altura aleatória deve ser de 100 a 400)
-    pygame.draw.rect(tela, VERDE, (pipe_position3, y3canodebaixo, 100,     900)) #cano de baixo(a posição do y deve ser de 250 a 600 )
-    '''
-    #cano 
-    desenhar_cano_cima_apocaliptico(tela, pipe_position, 100, altcanodecima)
-    desenhar_cano_baixo_apocaliptico(tela, pipe_position, ycanodebaixo, 100, ALTURA)
-
-    desenhar_cano_cima_apocaliptico(tela, pipe_position2, 100, alt2canodecima)
-    desenhar_cano_baixo_apocaliptico(tela, pipe_position2, y2canodebaixo, 100, ALTURA)
-
-    desenhar_cano_cima_apocaliptico(tela, pipe_position3, 100, alt3canodecima)
-    desenhar_cano_baixo_apocaliptico(tela, pipe_position3, y3canodebaixo, 100, ALTURA)
-
-    if run== True:
+    if Antigravidade==True :
         if pulo ==True:
-            if tempo-tempodeespaco < 175 :
-                y+=15
-            else:
-                pulo=False
-        imagemponto = fonte.render(f"{points}", False, BRANCO)
+            troca=True
+        else:
+            troca=False
+        if troca ==True :
+            gravity=gravity*queda #queda=1.05 gravity inicialmente= 5
+            y-=(gravity) #Velocidade de queda
+        elif troca==False:
+            y+=(gravity) #Velocidade de queda
+        imagemponto = fonte.render(f"{gravitypoints}", False, BRANCO)
         tela.blit(imagemponto, (220, 105))
-        gravity=gravity*queda #queda=1.05 gravity inicialmente= 5
-        '''if gravity>=10:
-            queda=1'''
-        y-=(gravity) #Velocidade de queda
         x=(velocidade) #Velocidade com que o cano se movimenta
         if espaco == pygame.K_SPACE :
             gravity=5
@@ -436,7 +394,7 @@ while rodando:
         pipe_position-=x
         pipe_position2-=x
         pipe_position3-=x
-        points+=addingpoints() 
+        gravitypoints+=addingpoints()
         #Reinício do cano
         pipe_position, altcanodecima, ycanodebaixo=pipereset(pipe_position,pipe_position3,altcanodecima,ycanodebaixo)
         pipe_position2, alt2canodecima, y2canodebaixo=pipereset(pipe_position2,pipe_position,alt2canodecima,y2canodebaixo)
@@ -447,10 +405,96 @@ while rodando:
         if ((pipe_position <= xflappy <= pipe_position + 100 and (yflappy <= altcanodecima or yflappy+40 >= ycanodebaixo)) or (pipe_position2 <= xflappy <= pipe_position2 + 100 and (yflappy <= alt2canodecima or yflappy+40 >= y2canodebaixo)) or (pipe_position3 <= xflappy <= pipe_position3 + 100 and (yflappy <= alt3canodecima or yflappy+40 >= y3canodebaixo)) or (-100 >= yflappy) or yflappy>= 700) :
             death_sound_func()
             notrunning = True
-            run = False
+            jogodopulo = False
             y = 5  # Resetando a posição do Flappy Bird
-            recorde = max(recorde, points)  # Atualizando o recorde se a pontuação atual for maior
-            points = 0  # Resetando a pontuação
+            recordegravity = max(recordegravity, gravitypoints)  # Atualizando o recorde se a pontuação atual for maior
+            gravitypoints = 0 # Resetando a pontuação
+
+            '''recordeflappy = max(recorde, Flappypointsypoints)  # Atualizando o recorde se a pontuação atual for maior
+            Flappypointspoints = 0 # Resetando a pontuação
+
+            recordekinnect = max(recorde, kinectpointspoints)  # Atualizando o recorde se a pontuação atual for maior
+            kinectpointspoints = 0 # Resetando a pontuação'''
+
+    #MENU
+    if notrunning== True and jogodopulo== False:
+        pygame.draw.rect(tela, VERDE, (150, 200, 200, 60))
+        pygame.draw.rect(tela, VERDE, (150, 270, 200, 60))
+        pygame.draw.rect(tela, VERDE, (150, 340, 200, 60))
+        pygame.draw.rect(tela, VERDE, (150, 410, 200, 60))
+        fonte = pygame.font.SysFont(None, 40)
+        textoimagem = fonte.render("Start", False, BRANCO)
+        imagemsaida = fonte.render("Esc", False, BRANCO)
+        imagemsegundo = fonte.render("2: Antigravity", False, BRANCO)
+        recordesimagem = fonte.render("P: Recordes", False, BRANCO)
+        tela.blit(textoimagem, (220, 215))
+        tela.blit(imagemsaida, (220, 420))
+        tela.blit(imagemsegundo, (160, 285))# X e Y
+        tela.blit(recordesimagem, (170, 355))# X e Y
+        pipe_position = 400
+        pipe_position2 = 700
+        pipe_position3 = 1100
+        pulo = False
+        espaco = None
+        gravity = 5
+        y = 5
+        tempodeespaco = 0
+        if tabela==True:
+            pygame.draw.rect(tela, VERDE, (130, 200, 230, 60))
+            pygame.draw.rect(tela, VERDE, (130, 270, 230, 60))
+            pygame.draw.rect(tela, VERDE, (130, 340, 230, 60))
+            imagemFlappypoints = fonte.render(f"Flappypoints :{recordeflappy}", False, BRANCO)
+            imagemgravitypoints = fonte.render(f"Gravitypoints :{recordegravity}", False, BRANCO)
+            imagemkinectpoints = fonte.render(f"Kinectpoints :{recordekinnect}", False, BRANCO)
+            tela.blit(imagemFlappypoints, (140, 215))
+            tela.blit(imagemgravitypoints, (140, 355))
+            tela.blit(imagemkinectpoints, (140, 285))# X e Y
+
+
+
+    
+    yflappy=100-y
+    desenhar_ovni(tela, xflappy, yflappy)
+
+    #cano 
+    desenhar_cano_cima_apocaliptico(tela, pipe_position, 100, altcanodecima)
+    desenhar_cano_baixo_apocaliptico(tela, pipe_position, ycanodebaixo, 100, ALTURA)
+
+    desenhar_cano_cima_apocaliptico(tela, pipe_position2, 100, alt2canodecima)
+    desenhar_cano_baixo_apocaliptico(tela, pipe_position2, y2canodebaixo, 100, ALTURA)
+
+    desenhar_cano_cima_apocaliptico(tela, pipe_position3, 100, alt3canodecima)
+    desenhar_cano_baixo_apocaliptico(tela, pipe_position3, y3canodebaixo, 100, ALTURA)
+
+    if jogodopulo== True and Antigravidade==False:
+        imagemponto = fonte.render(f"{Flappypoints}", False, BRANCO)
+        tela.blit(imagemponto, (220, 105))
+        gravity=gravity*queda #queda=1.05 gravity inicialmente= 5
+        if Antigravidade==False:
+            y-=(gravity) #Velocidade de queda
+        x=(velocidade) #Velocidade com que o cano se movimenta
+        if espaco == pygame.K_SPACE :
+            gravity=5
+            espaco= None
+        pygame.time.set_timer(pipetime, 2000)
+        pipe_position-=x
+        pipe_position2-=x
+        pipe_position3-=x
+        Flappypoints+=addingpoints() 
+        #Reinício do cano
+        pipe_position, altcanodecima, ycanodebaixo=pipereset(pipe_position,pipe_position3,altcanodecima,ycanodebaixo)
+        pipe_position2, alt2canodecima, y2canodebaixo=pipereset(pipe_position2,pipe_position,alt2canodecima,y2canodebaixo)
+        pipe_position3, alt3canodecima, y3canodebaixo=pipereset(pipe_position3,pipe_position2,alt3canodecima,y3canodebaixo)
+
+        #LÓGICA PARA COLISÃO  
+        #if (pipe_position <= xflappy <= pipe_position + 100 or pipe_position2 <= xflappy <= pipe_position2 + 100 or pipe_position3 <= xflappy <= pipe_position3 + 100) and (yflappy <= altcanodecima or yflappy >= ycanodebaixo):
+        if ((pipe_position <= xflappy <= pipe_position + 100 and (yflappy <= altcanodecima or yflappy+40 >= ycanodebaixo)) or (pipe_position2 <= xflappy <= pipe_position2 + 100 and (yflappy <= alt2canodecima or yflappy+40 >= y2canodebaixo)) or (pipe_position3 <= xflappy <= pipe_position3 + 100 and (yflappy <= alt3canodecima or yflappy+40 >= y3canodebaixo)) or (-100 >= yflappy) or yflappy>= 700) :
+            death_sound_func()
+            notrunning = True
+            jogodopulo = False
+            y = 5  # Resetando a posição do Flappy Bird
+            recordeflappy = max(recordeflappy, Flappypoints)  # Atualizando o recorde se a pontuação atual for maior
+            Flappypoints = 0  # Resetando a pontuação
 
     tempo = pygame.time.get_ticks()
     print(f'Tempo: {tempo} ms')
