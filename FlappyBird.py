@@ -418,19 +418,20 @@ while rodando:
 
     #MENU
     if notrunning== True and jogodopulo== False:
-        pygame.draw.rect(tela, VERDE, (150, 200, 200, 60))
-        pygame.draw.rect(tela, VERDE, (150, 270, 200, 60))
-        pygame.draw.rect(tela, VERDE, (150, 340, 200, 60))
-        pygame.draw.rect(tela, VERDE, (150, 410, 200, 60))
-        fonte = pygame.font.SysFont(None, 40)
-        textoimagem = fonte.render("Start", False, BRANCO)
-        imagemsaida = fonte.render("Esc", False, BRANCO)
-        imagemsegundo = fonte.render("2: Antigravity", False, BRANCO)
-        recordesimagem = fonte.render("P: Recordes", False, BRANCO)
-        tela.blit(textoimagem, (220, 215))
-        tela.blit(imagemsaida, (220, 420))
-        tela.blit(imagemsegundo, (160, 285))# X e Y
-        tela.blit(recordesimagem, (170, 355))# X e Y
+        if tabela==False:
+            pygame.draw.rect(tela, VERDE, (150, 200, 200, 60))
+            pygame.draw.rect(tela, VERDE, (150, 270, 200, 60))
+            pygame.draw.rect(tela, VERDE, (150, 340, 200, 60))
+            pygame.draw.rect(tela, VERDE, (150, 410, 200, 60))
+            fonte = pygame.font.SysFont(None, 40)
+            textoimagem = fonte.render("Start", False, BRANCO)
+            imagemsaida = fonte.render("Esc", False, BRANCO)
+            imagemsegundo = fonte.render("2: Antigravity", False, BRANCO)
+            recordesimagem = fonte.render("P: Recordes", False, BRANCO)
+            tela.blit(textoimagem, (220, 215))
+            tela.blit(imagemsaida, (220, 420))
+            tela.blit(imagemsegundo, (160, 285))# X e Y
+            tela.blit(recordesimagem, (170, 355))# X e Y
         pipe_position = 400
         pipe_position2 = 700
         pipe_position3 = 1100
