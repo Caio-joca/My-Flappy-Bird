@@ -361,7 +361,7 @@ while rodando:
      se ainda está pressionado ou não '''
     for evento in pygame.event.get():
         if evento.type == pygame.KEYDOWN: #aqui estu fazendo com que o programa reconheça o apertar da tecla x para assim fechar a jannela
-            if evento.key == pygame.K_SPACE :
+            if evento.key == pygame.K_SPACE and tabela==False :
                 jogodopulo=True
                 pulo=not pulo
                 som_de_pulo()
