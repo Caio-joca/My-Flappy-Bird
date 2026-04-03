@@ -343,6 +343,20 @@ while rodando:
     desenhar_fumaca_apocaliptica(tela)
     desenhar_luzes_ets(tela)
     desenhar_horizonte_apocaliptico(tela, LARGURA, ALTURA)
+
+    #Canos e Flappy
+    desenhar_ovni(tela, xflappy, yflappy)
+    yflappy=100-y
+    #cano 
+    desenhar_cano_cima_apocaliptico(tela, pipe_position, 100, altcanodecima)
+    desenhar_cano_baixo_apocaliptico(tela, pipe_position, ycanodebaixo, 100, ALTURA)
+
+    desenhar_cano_cima_apocaliptico(tela, pipe_position2, 100, alt2canodecima)
+    desenhar_cano_baixo_apocaliptico(tela, pipe_position2, y2canodebaixo, 100, ALTURA)
+
+    desenhar_cano_cima_apocaliptico(tela, pipe_position3, 100, alt3canodecima)
+    desenhar_cano_baixo_apocaliptico(tela, pipe_position3, y3canodebaixo, 100, ALTURA)
+
     '''essa função verifica se um botão foi pressionado, somente o toque, então o programa não vai saber 
      se ainda está pressionado ou não '''
     for evento in pygame.event.get():
@@ -367,13 +381,43 @@ while rodando:
                 tabela= not tabela
         elif evento.type == pygame.QUIT:
             rodando = False
-    if pulo ==True and Antigravidade==False:
-        if tempo-tempodeespaco < 175 :
-            y+=15
-        else:
-            pulo=False
 
+    #MENU / 1° MODO
+    if notrunning== True and jogodopulo== False:
+        if tabela==False:
+            pygame.draw.rect(tela, VERDE, (150, 200, 200, 60))
+            pygame.draw.rect(tela, VERDE, (150, 270, 200, 60))
+            pygame.draw.rect(tela, VERDE, (150, 340, 200, 60))
+            pygame.draw.rect(tela, VERDE, (150, 410, 200, 60))
+            fonte = pygame.font.SysFont(None, 40)
+            textoimagem = fonte.render("Start", False, BRANCO)
+            imagemsaida = fonte.render("Esc", False, BRANCO)
+            imagemsegundo = fonte.render("2: Antigravity", False, BRANCO)
+            recordesimagem = fonte.render("P: Recordes", False, BRANCO)
+            tela.blit(textoimagem, (220, 215))
+            tela.blit(imagemsaida, (220, 420))
+            tela.blit(imagemsegundo, (160, 285))# X e Y
+            tela.blit(recordesimagem, (170, 355))# X e Y
+        pipe_position = 400
+        pipe_position2 = 700
+        pipe_position3 = 1100
+        pulo = False
+        espaco = None
+        gravity = 5
+        y = 5
+        tempodeespaco = 0
+        if tabela==True:
+            pygame.draw.rect(tela, VERDE, (130, 200, 230, 60))
+            pygame.draw.rect(tela, VERDE, (130, 270, 230, 60))
+            pygame.draw.rect(tela, VERDE, (130, 340, 230, 60))
+            imagemFlappypoints = fonte.render(f"Flappypoints :{recordeflappy}", False, BRANCO)
+            imagemgravitypoints = fonte.render(f"Gravitypoints :{recordegravity}", False, BRANCO)
+            imagemkinectpoints = fonte.render(f"Kinectpoints :{recordekinnect}", False, BRANCO)
+            tela.blit(imagemFlappypoints, (140, 215))
+            tela.blit(imagemgravitypoints, (140, 355))
+            tela.blit(imagemkinectpoints, (140, 285))# X e Y
 
+    #2° Modo 
     if Antigravidade==True :
         if pulo ==True:
             troca=True
@@ -416,58 +460,13 @@ while rodando:
             recordekinnect = max(recorde, kinectpointspoints)  # Atualizando o recorde se a pontuação atual for maior
             kinectpointspoints = 0 # Resetando a pontuação'''
 
-    #MENU
-    if notrunning== True and jogodopulo== False:
-        if tabela==False:
-            pygame.draw.rect(tela, VERDE, (150, 200, 200, 60))
-            pygame.draw.rect(tela, VERDE, (150, 270, 200, 60))
-            pygame.draw.rect(tela, VERDE, (150, 340, 200, 60))
-            pygame.draw.rect(tela, VERDE, (150, 410, 200, 60))
-            fonte = pygame.font.SysFont(None, 40)
-            textoimagem = fonte.render("Start", False, BRANCO)
-            imagemsaida = fonte.render("Esc", False, BRANCO)
-            imagemsegundo = fonte.render("2: Antigravity", False, BRANCO)
-            recordesimagem = fonte.render("P: Recordes", False, BRANCO)
-            tela.blit(textoimagem, (220, 215))
-            tela.blit(imagemsaida, (220, 420))
-            tela.blit(imagemsegundo, (160, 285))# X e Y
-            tela.blit(recordesimagem, (170, 355))# X e Y
-        pipe_position = 400
-        pipe_position2 = 700
-        pipe_position3 = 1100
-        pulo = False
-        espaco = None
-        gravity = 5
-        y = 5
-        tempodeespaco = 0
-        if tabela==True:
-            pygame.draw.rect(tela, VERDE, (130, 200, 230, 60))
-            pygame.draw.rect(tela, VERDE, (130, 270, 230, 60))
-            pygame.draw.rect(tela, VERDE, (130, 340, 230, 60))
-            imagemFlappypoints = fonte.render(f"Flappypoints :{recordeflappy}", False, BRANCO)
-            imagemgravitypoints = fonte.render(f"Gravitypoints :{recordegravity}", False, BRANCO)
-            imagemkinectpoints = fonte.render(f"Kinectpoints :{recordekinnect}", False, BRANCO)
-            tela.blit(imagemFlappypoints, (140, 215))
-            tela.blit(imagemgravitypoints, (140, 355))
-            tela.blit(imagemkinectpoints, (140, 285))# X e Y
-
-
-
-    
-    yflappy=100-y
-    desenhar_ovni(tela, xflappy, yflappy)
-
-    #cano 
-    desenhar_cano_cima_apocaliptico(tela, pipe_position, 100, altcanodecima)
-    desenhar_cano_baixo_apocaliptico(tela, pipe_position, ycanodebaixo, 100, ALTURA)
-
-    desenhar_cano_cima_apocaliptico(tela, pipe_position2, 100, alt2canodecima)
-    desenhar_cano_baixo_apocaliptico(tela, pipe_position2, y2canodebaixo, 100, ALTURA)
-
-    desenhar_cano_cima_apocaliptico(tela, pipe_position3, 100, alt3canodecima)
-    desenhar_cano_baixo_apocaliptico(tela, pipe_position3, y3canodebaixo, 100, ALTURA)
-
+    #3° Modo
     if jogodopulo== True and Antigravidade==False:
+        if pulo ==True and Antigravidade==False:
+            if tempo-tempodeespaco < 175 :
+                y+=15
+            else:
+                pulo=False
         imagemponto = fonte.render(f"{Flappypoints}", False, BRANCO)
         tela.blit(imagemponto, (220, 105))
         gravity=gravity*queda #queda=1.05 gravity inicialmente= 5
@@ -496,6 +495,9 @@ while rodando:
             y = 5  # Resetando a posição do Flappy Bird
             recordeflappy = max(recordeflappy, Flappypoints)  # Atualizando o recorde se a pontuação atual for maior
             Flappypoints = 0  # Resetando a pontuação
+
+
+
 
     tempo = pygame.time.get_ticks()
     print(f'Tempo: {tempo} ms')

@@ -7,10 +7,11 @@
 
 1.The code need organization
     inside the while I need 3 stages of the game
-        I.Menu
-        II.running the game, if the bird dies back to the Menu
-        III.New game mode
-    So for this I need functions that guarantee certain actions, like the fall, jump, pipes movement
+        I.Menu(OK)
+        II.running the game, if the bird dies back to the Menu(OK)
+        III.New game mode(OK, The antigravity)
+    So for this I need functions that guarantee certain actions, like the fall, jump, pipes movement(OK)
+
 2.Adding camera recognition, for the flappy jumps qhen the person jumps also
     So the computer need to see the camera, undestand certain signals of the body, react to those signals:
         I. OpenCV for reading the camera on the machine that we are in
